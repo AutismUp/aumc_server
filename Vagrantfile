@@ -66,11 +66,12 @@ Vagrant.configure("2") do |config|
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-    apt update
-    apt upgrade
+    export DEBIAN_FRONTEND=noninteractive  
+    apt-get update
+    apt-get -y upgrade
     git config --global user.name "Nicholas Hatch"
     git config --global user.email "nicholas@thehatchcloud.org"
-    apt install openjdk-17-jre-headless screen rsync zip jq
+    apt-get -y install openjdk-17-jre-headless screen rsync zip jq
     wget https://git.io/6eiCSg -O /etc/msm.conf
     mkdir -p /opt/msm
     useradd minecraft --home /opt/msm
@@ -86,7 +87,10 @@ Vagrant.configure("2") do |config|
     msm update
     wget https://git.io/pczolg -O /etc/cron.d/msm
     service cron reload
+    msm update --noinput
     mkdir /opt/build_tools
+    chown -R minecraft:minecraft /opt/build_tools
+    chmod -R 775 /opt/build_tools
     curl -o /opt/build_tools/BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
   SHELL
 end
