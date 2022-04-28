@@ -75,6 +75,7 @@ Vagrant.configure("2") do |config|
     wget https://git.io/6eiCSg -O /etc/msm.conf
     mkdir -p /opt/msm
     useradd minecraft --home /opt/msm
+    chsh -s /bin/bash minecraft
     chown -R minecraft:minecraft /opt/msm
     chmod -R 775 /opt/msm
     mkdir /dev/shm/msm
@@ -92,5 +93,6 @@ Vagrant.configure("2") do |config|
     chown -R minecraft:minecraft /opt/build_tools
     chmod -R 775 /opt/build_tools
     curl -o /opt/build_tools/BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+    
   SHELL
 end
