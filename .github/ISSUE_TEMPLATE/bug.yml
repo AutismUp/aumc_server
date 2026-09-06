@@ -1,0 +1,52 @@
+name: Bug report
+description: Report incorrect or unsafe manager behavior
+title: "Bug: "
+labels:
+  - type:bug
+body:
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Do not include passwords, tokens, world data, or other secrets.
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: User and operational impact
+    validations:
+      required: true
+
+  - type: dropdown
+    id: security
+    attributes:
+      label: Could this be security-sensitive?
+      options:
+        - "No"
+        - "Unsure"
+        - "Yes - report privately using SECURITY.md instead"
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs or evidence
+      description: Redact credentials, session identifiers, player personal data, and private addresses.
+

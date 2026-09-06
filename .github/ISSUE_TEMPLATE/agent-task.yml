@@ -1,0 +1,115 @@
+name: Agent implementation task
+description: Define a bounded implementation task for a coding agent
+title: ""
+labels:
+  - agent:ready
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for work that should produce one focused, independently reviewable pull request.
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: Describe the observable outcome, not only the code to write.
+      placeholder: The manager can...
+    validations:
+      required: true
+
+  - type: input
+    id: plan-reference
+    attributes:
+      label: PLAN.md reference
+      description: Provide the task ID, such as M1-005.
+      placeholder: M0-002
+    validations:
+      required: true
+
+  - type: textarea
+    id: required-reading
+    attributes:
+      label: Required reading
+      description: List the relevant architecture sections, ADRs, and repository files.
+      placeholder: |
+        - AGENTS.md
+        - PLAN.md task M0-002
+        - docs/architecture/minecraft-server-manager-plan.md
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Link prerequisite issues or write "None."
+      placeholder: |
+        - Blocked by #123
+    validations:
+      required: true
+
+  - type: textarea
+    id: in-scope
+    attributes:
+      label: In scope
+      description: List the work this issue includes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+      description: State nearby work that this agent must not add.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Use objectively verifiable checklist items.
+      placeholder: |
+        - [ ] `go test ./...` passes.
+        - [ ] The documented behavior is implemented.
+    validations:
+      required: true
+
+  - type: textarea
+    id: tests
+    attributes:
+      label: Required tests
+      description: List unit, integration, security, browser, infrastructure, or recovery tests.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Risk level
+      options:
+        - Normal
+        - Elevated
+        - Critical
+    validations:
+      required: true
+
+  - type: textarea
+    id: delivery
+    attributes:
+      label: Required delivery report
+      description: Add any issue-specific information the agent must report with the pull request.
+
+  - type: checkboxes
+    id: readiness
+    attributes:
+      label: Readiness
+      options:
+        - label: Dependencies are complete or explicitly waived.
+          required: true
+        - label: The issue does not require an unapproved architecture change.
+          required: true
+        - label: Acceptance criteria are testable.
+          required: true
+
