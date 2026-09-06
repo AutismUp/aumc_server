@@ -72,12 +72,13 @@ The existing scripts must not be used for production provisioning because they t
 
 ### Repository foundation
 
-- [ ] **M0-001: Inventory the legacy repository**
+- [~] **M0-001: Inventory the legacy repository**
   - Dependencies: None
   - Record the behavior provided by `Vagrantfile`, `01-create-server.sh`, and `02-setup-server.sh`.
   - Identify any production data or undocumented workflow that still depends on them.
   - Add a deprecation note without deleting the files.
   - Done when the replacement requirements are traceable and removal criteria are documented.
+  - Evidence: [`docs/legacy/legacy-implementation-inventory.md`](docs/legacy/legacy-implementation-inventory.md) (PR for issue #2).
 
 - [ ] **M0-002: Create the Go workspace**
   - Dependencies: M0-001

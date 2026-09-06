@@ -1,1 +1,3 @@
+# Legacy Vagrant local state. The Vagrantfile is deprecated; see
+# docs/legacy/legacy-implementation-inventory.md. Removal requires M8-004.
 .vagrant

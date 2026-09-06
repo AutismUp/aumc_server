@@ -1,5 +1,12 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+#
+# LEGACY / DEPRECATED
+# This Vagrant environment is a historical MSM-based development input, not the
+# target Autism Up Minecraft Server Manager architecture. Do not use it to
+# provision production. See docs/legacy/legacy-implementation-inventory.md and
+# docs/architecture/minecraft-server-manager-plan.md. Removal requires M8-004.
+#
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
