@@ -1,0 +1,66 @@
+name: Architecture or product decision
+description: Research and resolve a decision that blocks implementation
+title: "Decision: "
+labels:
+  - type:decision
+  - needs-human
+body:
+  - type: textarea
+    id: decision
+    attributes:
+      label: Decision required
+      description: State the exact question that must be answered.
+    validations:
+      required: true
+
+  - type: input
+    id: plan-reference
+    attributes:
+      label: PLAN.md reference
+      placeholder: M0-006
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context and constraints
+      description: Include the facts, architecture constraints, and affected users.
+    validations:
+      required: true
+
+  - type: textarea
+    id: options
+    attributes:
+      label: Options to evaluate
+      description: List realistic alternatives and their trade-offs.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence required
+      description: Identify measurements, research, prototypes, or stakeholder input needed.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Completion criteria
+      placeholder: |
+        - [ ] Recommendation is documented.
+        - [ ] A maintainer records the final decision.
+        - [ ] ADR or configuration examples are updated.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: approval
+    attributes:
+      label: Approval
+      options:
+        - label: A human maintainer will approve the final decision.
+          required: true
+
