@@ -2,8 +2,9 @@
 
 **Status:** Historical documentation for M0-001  
 **Date:** 2026-09-06  
+**Updated:** 2026-09-07  
 **Source issue:** [#2](https://github.com/AutismUp/aumc_server/issues/2) (`M0-001`)  
-**Retirement authorization:** M8-004 only, after maintainers confirm no remaining operational dependency
+**Retirement authorization:** M8-004 only, after the remaining questions below are answered or waived
 
 This document records the behavior of the current Vagrant, Google Cloud, and Minecraft Server Manager (MSM) files. Those files are historical inputs, not the target architecture. They must remain in the repository until M8-004 authorizes retirement.
 
@@ -222,7 +223,7 @@ Backups are local zip files on the same disk as the live worlds. There is no res
 | S1 | Root init script and config downloaded through `git.io` short URLs with no pin or checksum | Critical | M2-004 host bootstrap; M3-002/M3-003 pinned artifacts; M7-001/M7-003 |
 | S2 | `msm update` pulls a second mutable MSM tree from GitHub `master`/`latest` | Critical | Retire MSM (M8-004); manager binary from reviewed GitHub releases (M7-001) |
 | S3 | GCP firewall allows SSH TCP/22 from `0.0.0.0/0` | Critical | M2-002 DigitalOcean firewall; M0-007 management-access policy |
-| S4 | GCP firewall allows Webmin TCP/10000 from `0.0.0.0/0` even though these scripts never install Webmin | High | Do not recreate. Confirm whether production ever installed Webmin (maintainer question Q3) |
+| S4 | GCP firewall allows Webmin TCP/10000 from `0.0.0.0/0` even though these scripts never install Webmin | High | Do not recreate. Maintainer confirmed Webmin no longer exists (Q3, 2026-09-07) |
 | S5 | HTTPS TCP/443 allowed from `0.0.0.0/0` with no TLS proxy or app installed by setup | High | M7-002 Caddy; M0-007 UI exposure decision |
 | S6 | Unpinned `BuildTools.jar` from Jenkins `lastSuccessfulBuild` | High | M0-008 policy; M3-002 pinned BuildTools digest |
 | S7 | Interactive sudo user `auoperator` with no password policy, expiry, or MFA | High | M1-004 through M1-008 local staff accounts; M0-007 policy |
@@ -261,27 +262,32 @@ Legend: **preserve** = product capability to keep; **replace** = keep the outcom
 | Unpinned BuildTools download | Retire | M3-002 |
 | `openjdk-17-jre-headless` on the host for Minecraft | Replace | Pinned container JDK (M3) |
 | `minecraft` system user owning `/opt/msm` | Replace | Volume layout and container user (M2/M3/M4) |
-| `auoperator` sudo SSH operator | Replace | Browser sessions and capability roles (M1, M0-007) |
+| `auoperator` sudo SSH operator | Retire | Maintainer confirmed `auoperator` no longer exists (Q4, 2026-09-07). Replacement staff access is browser sessions and capability roles (M1, M0-007) |
 | Hardcoded Git user.name/email | Retire | Do not reproduce |
-| Webmin TCP/10000 | Needs maintainer decision | Q3 |
-| Existing GCP VM `au-minecraft-2023070202`, reserved IP, worlds, and backups | Needs maintainer decision | Q1, Q2, Q4, Q5 |
+| Webmin TCP/10000 | Retire | Maintainer confirmed Webmin no longer exists (Q3, 2026-09-07). Do not expose TCP/10000 in M2 |
+| Existing GCP VM `au-minecraft-2023070202`, reserved IP, worlds, and backups | Retire | Maintainer confirmed the VM, Webmin, `auoperator`, and production worlds no longer exist (Q1–Q5, 2026-09-07). M8-001 creates or imports a new pilot world rather than migrating this host |
 | Whether anyone still runs `vagrant up` against this repo | Needs maintainer decision | Q6 |
 | Ubuntu 20.04 vs 22.04 split | Retire both as the runtime OS image once M2 pins a host image | M2-004 |
 
 ## Maintainer questions
 
-Unknown operational dependencies. Do not delete legacy files or GCP resources until these are answered.
+Recorded 2026-09-07 unless noted. Do not delete the in-repo legacy files until M8-004. Remaining open items do not block documenting this inventory.
 
-1. **Q1 — Live GCP workload:** Does project `autismupminecraft` still contain VM `au-minecraft-2023070202`, address `au-minecraft-ip`, or later replacements? If yes, who has `gcloud` access, and is it still serving players?
-2. **Q2 — World and backup location:** Where are current production worlds and MSM archives stored? Candidates are `/opt/msm/servers`, `/opt/msm/archives`, a GCP snapshot, or an unlisted copy. Confirm there is no undocumented NAS/drive path.
-3. **Q3 — Webmin:** Was Webmin actually installed on production despite not appearing in `02-setup-server.sh`? If a host listens on TCP/10000, it must be closed and inventoried before any cutover.
-4. **Q4 — Operator account:** Is `auoperator` (or another sudo SSH user) still the staff access path? What keys, passwords, or Google OS Login identities are in use?
-5. **Q5 — MSM server names and JAR groups:** What MSM server names, ports, plugins, and JAR-group URLs exist in production? Those names are not in this repository.
+### Answered
+
+1. **Q1 — Live GCP workload:** Answered 2026-09-07. VM `au-minecraft-2023070202` no longer exists. Treat the Google Cloud create script as historical only.
+2. **Q2 — World and backup location:** Answered 2026-09-07. Production worlds no longer exist. M8-001 must create or import a new pilot world; there is no live MSM world tree to migrate from this host.
+3. **Q3 — Webmin:** Answered 2026-09-07. Webmin no longer exists. Do not recreate TCP/10000 in DigitalOcean firewall policy.
+4. **Q4 — Operator account:** Answered 2026-09-07. `auoperator` no longer exists. Replacement staff access is the manager's local accounts and capabilities (M0-007, M1).
+5. **Q5 — MSM server names and JAR groups:** Answered 2026-09-07 by the production-worlds confirmation. No production MSM servers remain to catalog.
+
+### Open
+
 6. **Q6 — Vagrant usage:** Do maintainers still use `vagrant up` from this repository for development or demos?
 7. **Q7 — Git identity:** Should `nicholas@thehatchcloud.org` remain associated with any remaining hosts, or was it only a bootstrap convenience?
-8. **Q8 — Firewall rule reuse:** Do GCP rules `allow-tag-ssh`, `allow-tag-web-https`, `allow-tag-webmin`, and `allow-tag-minecraft` still exist, and are they attached to other VMs?
-9. **Q9 — Off-host copies:** Is there any backup outside the GCP boot disk (download, Drive, another cloud, player-laptop copy) that M8-001 must import?
-10. **Q10 — Legal/operational MSM dependency:** Is any external automation (cron elsewhere, staff alias, wiki) still documenting `msm` commands against these hosts?
+8. **Q8 — Firewall rule reuse:** Do GCP rules `allow-tag-ssh`, `allow-tag-web-https`, `allow-tag-webmin`, and `allow-tag-minecraft` still exist on leftover project resources even though the named VM is gone?
+9. **Q9 — Off-host copies:** Is there any world copy outside the retired GCP VM (download, Drive, another cloud, player-laptop copy) that M8-001 should import, or is the pilot a fresh world?
+10. **Q10 — Operational MSM dependency:** Is any external automation (cron elsewhere, staff alias, wiki) still documenting `msm` commands?
 
 ## Replacement map
 
@@ -298,17 +304,17 @@ Unknown operational dependencies. Do not delete legacy files or GCP resources un
 | Encrypted off-host backup and restore | M5-001 through M5-007 |
 | Staff web workflows | M6-001 through M6-008 |
 | Production deployment | M7-001 through M7-006 |
-| World import and legacy retirement | M8-001, M8-004 |
+| World import and legacy retirement | M8-001 creates or imports a new pilot world (no live GCP/MSM world remains); delete in-repo legacy files only in M8-004 |
 
 ## Removal criteria for M8-004
 
 Do not remove or rewrite the legacy files until all of the following are true:
 
-1. This inventory is accepted and the questions above are answered or explicitly waived.
+1. This inventory is accepted and remaining open questions are answered or explicitly waived.
 2. The DigitalOcean path is in production use (M7 complete, M8 pilot running or complete).
-3. Production worlds have been imported or recreated under ADR 0002 layout (M8-001).
-4. Maintainers confirm no person, script, or document still requires `Vagrantfile`, `gcloud` scripts, or host `msm`.
-5. GCP firewall rules, VMs, and reserved IPs are either destroyed through a reviewed process or tracked as a separate decommission issue.
+3. The pilot world has been created or imported under ADR 0002 layout (M8-001). Maintainers confirmed the legacy GCP VM and its production worlds no longer exist, so M8-001 is not blocked on a GCP world export.
+4. Maintainers confirm no person, script, or document still requires `Vagrantfile`, `gcloud` scripts, or host `msm` (Q6, Q10).
+5. Any leftover GCP firewall rules, addresses, or project resources are destroyed through a reviewed process or tracked as a separate decommission issue (Q8).
 6. M8-004 authorizes retirement.
 
 Until then, treat the files as read-only historical inputs except for deprecation comments that do not change execution.
