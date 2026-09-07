@@ -1,4 +1,11 @@
 #!/bin/bash
+#
+# LEGACY / DEPRECATED
+# This Google Cloud provisioning script is a historical MSM-based input, not the
+# target DigitalOcean architecture. Do not use it to provision production. See
+# docs/legacy/legacy-implementation-inventory.md and
+# docs/architecture/minecraft-server-manager-plan.md. Removal requires M8-004.
+#
 
 ## VARIABLES
 PROJECT_ID="autismupminecraft"
